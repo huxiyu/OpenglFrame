@@ -117,7 +117,7 @@ Window {
             anchors.left: parent.left
             anchors.top: globalAmbientB.bottom
             anchors.topMargin: 30
-            text: "材料散射光和环境光的反射率(相同的值)"
+            text: "材料环境光和散射光的反射率(相同的值)"
             font.family: "Arial"
             font.pixelSize: 12
             color: "#DDDDDD"
@@ -168,12 +168,67 @@ Window {
             }
         }
 
+        Text
+        {
+            id: matrialSpecularText
+            anchors.left: parent.left
+            anchors.top: matrialAmbientDiffuseB.bottom
+            anchors.topMargin: 30
+            text: "材料镜面光的反射率"
+            font.family: "Arial"
+            font.pixelSize: 12
+            color: "#DDDDDD"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Slider {
+            id: matrialSpecularR
+            anchors.left: parent.left
+            anchors.top: matrialSpecularText.bottom
+            anchors.topMargin: 5
+            minimumValue: 0.0
+            maximumValue: 1.0
+            value: 1.0
+            onValueChanged: {
+                //                console.log(matrialAmbientDiffuseR.value)
+                wmodelshow.mode.matrialSpecularR(matrialSpecularR.value)
+            }
+
+        }
+
+        Slider {
+            id: matrialSpecularG
+            anchors.left: parent.left
+            anchors.top: matrialSpecularR.bottom
+            anchors.topMargin: 10
+            minimumValue: 0.0
+            maximumValue: 1.0
+            value: 1.0
+            onValueChanged: {
+                wmodelshow.mode.matrialSpecularG(matrialSpecularG.value)
+            }
+        }
+
+        Slider {
+            id: matrialSpecularB
+            anchors.left: parent.left
+            anchors.top: matrialSpecularG.bottom
+            anchors.topMargin: 10
+            minimumValue: 0.0
+            maximumValue: 1.0
+            value: 1.0
+            onValueChanged: {
+                wmodelshow.mode.matrialSpecularB(matrialSpecularB.value)
+            }
+        }
+
 
         CheckBox
         {
             id: enableLight0
             anchors.left: parent.left
-            anchors.top: matrialAmbientDiffuseB.bottom
+            anchors.top: matrialSpecularB.bottom
             anchors.topMargin: 30
             enabled: true
             checked: false
@@ -303,11 +358,67 @@ Window {
             }
         }
 
+
+        Text
+        {
+            id: light0SpecularText
+            anchors.left: parent.left
+            anchors.top: light0DiffuseB.bottom
+            anchors.topMargin: 15
+            text: "光源0 -- 镜面光"
+            font.family: "Arial"
+            font.pixelSize: 12
+            color: "#DDDDDD"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Slider {
+            id: light0SpecularR
+            anchors.left: parent.left
+            anchors.top: light0SpecularText.bottom
+            anchors.topMargin: 5
+            minimumValue: 0.0
+            maximumValue: 1.0
+            value: 0.0
+            onValueChanged: {
+                wmodelshow.mode.light0SpecularR(light0SpecularR.value)
+            }
+
+        }
+
+        Slider {
+            id: light0SpecularG
+            anchors.left: parent.left
+            anchors.top: light0SpecularR.bottom
+            anchors.topMargin: 10
+            minimumValue: 0.0
+            maximumValue: 1.0
+            value: 0.0
+            onValueChanged: {
+                wmodelshow.mode.light0SpecularG(light0SpecularG.value)
+            }
+        }
+
+        Slider {
+            id: light0SpecularB
+            anchors.left: parent.left
+            anchors.top: light0SpecularG.bottom
+            anchors.topMargin: 10
+            minimumValue: 0.0
+            maximumValue: 1.0
+            value: 0.0
+            onValueChanged: {
+                wmodelshow.mode.light0SpecularB(light0SpecularB.value)
+            }
+        }
+
+
         Text
         {
             id: light0PosText
             anchors.left: parent.left
-            anchors.top: light0DiffuseB.bottom
+            anchors.top: light0SpecularB.bottom
             anchors.topMargin: 15
             text: "光源0 -- 位置"
             font.family: "Arial"

@@ -108,6 +108,44 @@ void COglContainer::matrialAmbientDiffuseB(float v)
     }
 }
 
+
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+
+void COglContainer::matrialSpecularR(float v)
+{
+    if (g_renderer != NULL)
+    {
+        g_renderer->matrialSpecular[0] = v;
+    }
+}
+
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+
+void COglContainer::matrialSpecularG(float v)
+{
+    if (g_renderer != NULL)
+    {
+        g_renderer->matrialSpecular[1] = v;
+    }
+}
+
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+
+void COglContainer::matrialSpecularB(float v)
+{
+    if (g_renderer != NULL)
+    {
+        qDebug("matrialAmbientDiffuseB = %f", v);
+        g_renderer->matrialSpecular[2] = v;
+    }
+}
+
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
@@ -188,6 +226,42 @@ void COglContainer::light0DiffuseB(float v)
     if (g_renderer != NULL)
     {
         g_renderer->light0Diffuse[2] = v;
+    }
+}
+
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+
+void COglContainer::light0SpecularR(float v)
+{
+    if (g_renderer != NULL)
+    {
+        g_renderer->light0Specular[0] = v;
+    }
+}
+
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+
+void COglContainer::light0SpecularG(float v)
+{
+    if (g_renderer != NULL)
+    {
+        g_renderer->light0Specular[1] = v;
+    }
+}
+
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+
+void COglContainer::light0SpecularB(float v)
+{
+    if (g_renderer != NULL)
+    {
+        g_renderer->light0Specular[2] = v;
     }
 }
 

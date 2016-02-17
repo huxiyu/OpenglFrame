@@ -43,6 +43,8 @@ public:
     float globalAmbient[4];
     //材料的反射率（环境光和散射光）
     float matrialAmbientDiffuse[4];
+    //材料的反射率（镜面光）
+    float matrialSpecular[4];
     // 是否启用颜色追踪
     bool enableColorMatrial;
 
@@ -52,6 +54,8 @@ public:
     float light0Ambient[4];
     // 光源0 散射光
     float light0Diffuse[4];
+    // 光源0 镜面光
+    float light0Specular[4];
     // 光源0 位置
     float light0Pos[4];
 };

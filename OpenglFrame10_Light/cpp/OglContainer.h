@@ -37,6 +37,10 @@ public:
     Q_INVOKABLE void matrialAmbientDiffuseG(float v);
     Q_INVOKABLE void matrialAmbientDiffuseB(float v);
 
+    Q_INVOKABLE void matrialSpecularR(float v);
+    Q_INVOKABLE void matrialSpecularG(float v);
+    Q_INVOKABLE void matrialSpecularB(float v);
+
     Q_INVOKABLE void enableLight0(bool v);
     Q_INVOKABLE void light0AmbientR(float v);
     Q_INVOKABLE void light0AmbientG(float v);
@@ -44,6 +48,10 @@ public:
     Q_INVOKABLE void light0DiffuseR(float v);
     Q_INVOKABLE void light0DiffuseG(float v);
     Q_INVOKABLE void light0DiffuseB(float v);
+    Q_INVOKABLE void light0SpecularR(float v);
+    Q_INVOKABLE void light0SpecularG(float v);
+    Q_INVOKABLE void light0SpecularB(float v);
+
     Q_INVOKABLE void light0PosX(float v);
     Q_INVOKABLE void light0PosY(float v);
     Q_INVOKABLE void light0PosZ(float v);
