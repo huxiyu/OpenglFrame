@@ -135,7 +135,7 @@ void COglRenderer::render()
     // 此后，所有的材料都具有完全的强光泽的镜面反射
     glMaterialfv(GL_FRONT, GL_SPECULAR, matrialSpecular);
     glMateriali(GL_FRONT, GL_SHININESS, 128);
-\
+
     glColor4f(matrialAmbientDiffuse[0], matrialAmbientDiffuse[1], matrialAmbientDiffuse[2], 1.0f);
 
     /*********************光源*************************/
