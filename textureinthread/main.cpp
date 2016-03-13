@@ -3,7 +3,7 @@
 ** Copyright (C) 2015 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the documentation of the Qt Toolkit.
+** This file is part of the examples of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,46 +38,59 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QWindow>
-#include <QtGui/QOpenGLFunctions>
-#include <QtGUI/QOpenGLFunctions>
+#include <QtCore/QThread>
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QOpenGLContext;
-class QOpenGLPaintDevice;
-QT_END_NAMESPACE
+#include <QGuiApplication>
 
-//! [1]
-class OpenGLWindow : public QWindow, protected QOpenGLFunctions//QOpenGLFunctions
+#include <QtGui/private/qguiapplication_p.h>
+#include <QtGui/qpa/qplatformintegration.h>
+
+#include <QtQuick/QQuickView>
+
+#include "threadrenderer.h"
+#include "openglcontexttool.h"
+
+int main(int argc, char **argv)
 {
-    Q_OBJECT
-public:
-    explicit OpenGLWindow(QWindow *parent = 0);
-    ~OpenGLWindow();
+    QGuiApplication app(argc, argv);
 
-    virtual void render(QPainter *painter);
-    virtual void render();
+    if (!QGuiApplicationPrivate::platform_integration->hasCapability(QPlatformIntegration::ThreadedOpenGL)) {
+        QQuickView view;
+        view.setSource(QUrl("qrc:///scenegraph/textureinthread/error.qml"));
+        view.show();
+        return app.exec();
+    }
 
-    virtual void initialize();
+    qmlRegisterType<ThreadRenderer>("SceneGraphRendering", 1, 0, "Renderer");
+    int execReturn = 0;
 
-    void setAnimating(bool animating);
+    {
+        QQuickView view;
 
-public slots:
-    void renderLater();
-    void renderNow();
+        // Rendering in a thread introduces a slightly more complicated cleanup
+        // so we ensure that no cleanup of graphics resources happen until the
+        // application is shutting down.
+        view.setPersistentOpenGLContext(true);
+        view.setPersistentSceneGraph(true);
 
-protected:
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
+        setContext(view);
+        qDebug() << "\n*** QSurfaceFormat from window surface ***";
+        printFormat(view.format());
 
-    void exposeEvent(QExposeEvent *event) Q_DECL_OVERRIDE;
+        view.setResizeMode(QQuickView::SizeRootObjectToView);
+        view.setSource(QUrl("qrc:///scenegraph/textureinthread/main.qml"));
+        view.show();
 
-private:
-    bool m_update_pending;
-    bool m_animating;
+        execReturn = app.exec();
+    }
 
-    QOpenGLContext *m_context;
-    QOpenGLPaintDevice *m_device;
-};
-//! [1]
+    // As the render threads make use of our QGuiApplication object
+    // to clean up gracefully, wait for them to finish before
+    // QGuiApp is taken off the heap.
+    foreach (QThread *t, ThreadRenderer::threads) {
+        t->wait();
+        delete t;
+    }
 
+    return execReturn;
+}

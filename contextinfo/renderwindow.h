@@ -3,7 +3,7 @@
 ** Copyright (C) 2015 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the documentation of the Qt Toolkit.
+** This file is part of the examples of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,46 +38,45 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QWindow>
-#include <QtGui/QOpenGLFunctions>
-#include <QtGUI/QOpenGLFunctions>
+#ifndef RENDERWINDOW_H
+#define RENDERWINDOW_H
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QOpenGLContext;
-class QOpenGLPaintDevice;
-QT_END_NAMESPACE
+#include <QWindow>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
 
-//! [1]
-class OpenGLWindow : public QWindow, protected QOpenGLFunctions//QOpenGLFunctions
+QT_FORWARD_DECLARE_CLASS(QOpenGLContext)
+QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
+
+class RenderWindow : public QWindow
 {
     Q_OBJECT
+
 public:
-    explicit OpenGLWindow(QWindow *parent = 0);
-    ~OpenGLWindow();
+    RenderWindow(const QSurfaceFormat &format);
+    QOpenGLContext *context() { return m_context; }
+    void exposeEvent(QExposeEvent *) Q_DECL_OVERRIDE;
+    void setForceGLSL110(bool enable) { m_forceGLSL110 = enable; }
 
-    virtual void render(QPainter *painter);
-    virtual void render();
+signals:
+    void ready();
+    void error(const QString &msg);
 
-    virtual void initialize();
-
-    void setAnimating(bool animating);
-
-public slots:
-    void renderLater();
-    void renderNow();
-
-protected:
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
-
-    void exposeEvent(QExposeEvent *event) Q_DECL_OVERRIDE;
+private slots:
+    void render();
 
 private:
-    bool m_update_pending;
-    bool m_animating;
+    void init();
+    void setupVertexAttribs();
 
     QOpenGLContext *m_context;
-    QOpenGLPaintDevice *m_device;
+    bool m_initialized;
+    bool m_forceGLSL110;
+    QOpenGLShaderProgram *m_program;
+    int m_posAttr, m_colAttr, m_matrixUniform;
+    QOpenGLVertexArrayObject m_vao;
+    QOpenGLBuffer m_vbo;
+    float m_angle;
 };
-//! [1]
 
+#endif // RENDERWINDOW_H

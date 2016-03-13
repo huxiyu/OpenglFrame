@@ -3,7 +3,7 @@
 ** Copyright (C) 2015 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the documentation of the Qt Toolkit.
+** This file is part of the examples of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,46 +38,46 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QWindow>
-#include <QtGui/QOpenGLFunctions>
-#include <QtGUI/QOpenGLFunctions>
+#ifndef WIDGET_H
+#define WIDGET_H
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QOpenGLContext;
-class QOpenGLPaintDevice;
-QT_END_NAMESPACE
+#include <QWidget>
 
-//! [1]
-class OpenGLWindow : public QWindow, protected QOpenGLFunctions//QOpenGLFunctions
+QT_FORWARD_DECLARE_CLASS(QComboBox)
+QT_FORWARD_DECLARE_CLASS(QTextEdit)
+QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
+QT_FORWARD_DECLARE_CLASS(QSurfaceFormat)
+QT_FORWARD_DECLARE_CLASS(QSurface)
+
+class Widget : public QWidget
 {
     Q_OBJECT
+
 public:
-    explicit OpenGLWindow(QWindow *parent = 0);
-    ~OpenGLWindow();
+    explicit Widget(QWidget *parent = 0);
 
-    virtual void render(QPainter *painter);
-    virtual void render();
-
-    virtual void initialize();
-
-    void setAnimating(bool animating);
-
-public slots:
-    void renderLater();
-    void renderNow();
-
-protected:
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
-
-    void exposeEvent(QExposeEvent *event) Q_DECL_OVERRIDE;
+private slots:
+    void start();
+    void renderWindowReady();
+    void renderWindowError(const QString &msg);
 
 private:
-    bool m_update_pending;
-    bool m_animating;
+    void addVersions(QLayout *layout);
+    void addProfiles(QLayout *layout);
+    void addOptions(QLayout *layout);
+    void addRenderableTypes(QLayout *layout);
+    void addRenderWindow();
+    void printFormat(const QSurfaceFormat &format);
 
-    QOpenGLContext *m_context;
-    QOpenGLPaintDevice *m_device;
+    QComboBox *m_version;
+    QLayout *m_profiles;
+    QLayout *m_options;
+    QLayout *m_renderables;
+    QTextEdit *m_output;
+    QTextEdit *m_extensions;
+    QVBoxLayout *m_renderWindowLayout;
+    QWidget *m_renderWindowContainer;
+    QSurface *m_surface;
 };
-//! [1]
 
+#endif // WIDGET_H

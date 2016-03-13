@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
 
     QSurfaceFormat format;
-    format.setSamples(32);
+    format.setSamples(16);
 
     TriangleWindow window;
     window.setFormat(format);
@@ -97,21 +97,26 @@ int main(int argc, char **argv)
 
 
 //! [3]
+
 static const char *vertexShaderSource =
-    "attribute highp vec4 posAttr;\n"
-    "attribute lowp vec4 colAttr;\n"
-    "varying lowp vec4 col;\n"
-    "uniform highp mat4 matrix;\n"
+    "#version 150 core\n"
+    "in vec4 posAttr;\n"
+    "in vec4 colAttr;\n"
+    "out vec4 col;\n"
+    "uniform mat4 matrix;\n"
     "void main() {\n"
     "   col = colAttr;\n"
     "   gl_Position = matrix * posAttr;\n"
     "}\n";
 
 static const char *fragmentShaderSource =
-    "varying lowp vec4 col;\n"
+    "#version 150 core\n"
+    "in vec4 col;\n"
+    "out vec4 fragColor;\n"
     "void main() {\n"
-    "   gl_FragColor = col;\n"
+    "   fragColor = col;\n"
     "}\n";
+
 //! [3]
 
 //! [4]

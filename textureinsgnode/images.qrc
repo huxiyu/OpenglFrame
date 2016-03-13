@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/images/1.gif</file>
+    </qresource>
+</RCC>
